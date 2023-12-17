@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AutomaticStoreLibrary;
 public class ProductCatalog
 {
-    public IEnumerable<Product> GetProducts() => products;
+    public List<Product> GetProducts() => products;
 
     private readonly List<Product> products = new();
     private readonly HashSet<int> usedIds = new();

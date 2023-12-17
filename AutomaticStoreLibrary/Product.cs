@@ -75,12 +75,29 @@ public class Product : IComparable<Product>
     {
         if (other == null) return 1;
 
-        int packagingComparison = Packaging.CompareTo(other.Packaging);
-        if (packagingComparison != 0)
+        // If same packaging then sort by weight
+        if (Packaging == other.Packaging)
         {
-            return packagingComparison;
+            return Weight.CompareTo(other.Weight) * -1;
         }
 
-        return Weight.CompareTo(other.Weight) * -1;
+        // If one has type D and the other does not, order by type
+        if (Packaging == PackagingClass.TypeD && other.Packaging != PackagingClass.TypeD)
+        {
+            return 1;
+        }
+        else if (Packaging != PackagingClass.TypeD && other.Packaging == PackagingClass.TypeD)
+        {
+            return -1;
+        }
+
+        // If weight difference is too big, sort by weight
+        if (Weight / other.Weight <= 0.2 || other.Weight / Weight <= 0.2)
+        {
+            return Weight.CompareTo(other.Weight) * -1;
+        }
+
+        // Sort by packaging
+        return Packaging.CompareTo(other.Packaging);
     }
 }

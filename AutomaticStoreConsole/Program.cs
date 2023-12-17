@@ -8,18 +8,18 @@ internal class Program
     static void Main(string[] args)
     {
         ProductCatalog catalog = new();
-        List<Product> products = catalog.GetProducts().ToList();
+        //List<Product> products = catalog.GetProducts();
         List<Product> cart = new();
 
         Console.WriteLine("All products:");
-        foreach (Product product in products)
+        foreach (Product product in catalog.GetProducts())
         {
             Console.WriteLine(product.Name);
         }
 
-        Console.WriteLine("\nAdd products using the names above:");
+        //Console.WriteLine("\nAdd products using the names above:");
 
-        bool addingToCart = true;
+        bool addingToCart = false;
 
         while (addingToCart)
         {
@@ -31,7 +31,7 @@ internal class Program
             }
 
             // Check if product exists
-            Product? productToAdd = products.FirstOrDefault(p => p.Name.Equals(input, StringComparison.OrdinalIgnoreCase));
+            Product? productToAdd = catalog.GetProducts().FirstOrDefault(p => p.Name.Equals(input, StringComparison.OrdinalIgnoreCase));
             if (productToAdd == null)
             {
                 Console.WriteLine("Product not found");
@@ -64,13 +64,34 @@ internal class Program
             }
         }
 
-        Console.WriteLine("Cart:");
-        cart.Sort();
+        cart = catalog.GetProducts();
+
+        Console.WriteLine("\nCart:");
         foreach (Product product in cart)
         {
-            Console.WriteLine(product.Name);
+            Console.WriteLine($"{product.Packaging} {product.Weight}g - {product.Name}");
+        }
+
+        cart.Sort();
+
+        Console.WriteLine("\nSorted cart:");
+        foreach (Product product in cart)
+        {
+            Console.WriteLine($"{product.Packaging} {product.Weight}g - {product.Name}");
         }
 
         Console.ReadKey(true);
+    }
+
+    private static List<Product> SortCart(List<Product> products)
+    {
+        IEnumerable<Product> productsByWeight = products.OrderBy(x => x.Packaging);
+
+        for (int i = 0; i < productsByWeight.Count(); i++)
+        {
+
+        }
+
+        return productsByWeight.ToList();
     }
 }

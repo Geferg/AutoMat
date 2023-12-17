@@ -12,7 +12,7 @@ public class Enums
         TypeA,
         TypeB,
         TypeC,
-        None
+        TypeD
     }
 }
 
